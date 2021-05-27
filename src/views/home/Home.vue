@@ -37,8 +37,8 @@
       <!-- 组件绑定事件需要.native修饰 -->
     </scroll>
     <back-top 
-          @click.native="backTopClick"
-          v-show="isShowbt"></back-top>
+          @click.native="backClick"
+          v-show="isShowBackTop"></back-top>
     
   </div>
 </template>
@@ -59,6 +59,7 @@
   
   // 导入其他
   import { debounce } from '@/common/utils'
+  import { backTopMixin } from '@/common/mixin'
   export default {
     name: 'Home',
     data() {
@@ -73,10 +74,12 @@
         currentType: 'pop',
         isShowbt: false,
         tabOffsetTop: 0,
-        isShowFixed: false
+        isShowFixed: false,
+        saveY: 0
 
       }
     },
+    mixins: [backTopMixin],
     components: {
       NavBar,
       HomeSwiper,
@@ -101,11 +104,21 @@
       // 防抖动函数debounce，防止调用过于频繁
       const refresh = debounce(this.$refs.scroll && this.$refs.scroll.refresh, 200)
       // 监听goodsListItem组件发射的图片加载事件
-      this.$bus.$on('gitemImgLoad', () => {
+      this.$bus.$on('HometemImgLoad', () => {
         // this.$refs.scroll保证能拿到scroll对象 
         // this.$refs.scroll && this.$refs.scroll.refresh()
         refresh()
       })
+    },
+    activated() {
+      // 当 DOM 结构发生变化的时候务必要调用确保滚动的效果正常
+      this.$refs.scroll.refresh()
+      // 滚动到saveY处
+      this.$refs.scroll.scrollTo(0,this.saveY,1)
+    },
+    deactivated() {
+      // 因轮播图和better-scroll都使用transform会存在冲突，需要离开首页时记录滚动距离，回到首页时又瞬间滚动记录的距离处
+     this.saveY = this.$refs.scroll.getScrollY();
     },
     methods:{
       /* 
@@ -154,15 +167,15 @@
         this.$refs.tabControl.currentIndex = index;
         this.$refs.tabControlFixed.currentIndex = index;
       },
-      // 返回顶部
-      backTopClick(){
-        this.$refs.scroll && this.$refs.scroll.scrollTo(0, 0, 500)
-      },
+      // 返回顶部,使用混入mixin
+      // backTopClick(){
+      //   this.$refs.scroll && this.$refs.scroll.scrollTo(0, 0, 500)
+      // },
       // 页面滚动
       contentScroll(position) {
         // -position.y > 1500 ? this.isShowbt = true : this.isShowbt = false
         // 是否显示返回顶部按钮
-        this.isShowbt = (-position.y) > 1500;
+        this.isShowBackTop = (-position.y) > 1500;
         // 吸顶效果
         this.isShowFixed = (-position.y) >= this.tabOffsetTop;
 

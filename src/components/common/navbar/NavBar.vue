@@ -26,7 +26,7 @@
     height: 44px;
     line-height: 44px;
     display: flex;
-     box-shadow: 0 1px 1px rgba(100, 100, 100, 0.1);
+    box-shadow: 0 1px 1px rgba(100, 100, 100, 0.1);
   }
   .left-bar,
   .right-bar {

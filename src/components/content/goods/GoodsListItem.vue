@@ -1,7 +1,7 @@
 <template>
-  <div class="goods-item">
+  <div class="goods-item" @click="goodsItemClick">
     <!-- @load监听图片加载用以调用betterscroll的refresh方法 -->
-      <img :src="goodsItem.show.img" @load="imgLoad">
+      <img :src="showImg" @load="imgLoad">
       <div class="goods-info">
         <p>{{goodsItem.title}}</p>
         <span class="price">￥{{goodsItem.price}}</span>
@@ -26,7 +26,28 @@
     methods: {
       imgLoad() {
         // 利用事件总线bus发射事件
-        this.$bus.$emit('gitemImgLoad')
+        if (this.$route.path.indexOf('/home') !== -1 ) {
+          this.$bus.$emit('homeItemImgLoad')
+          
+        } else if (this.$route.path.indexOf('/detail') !== -1) {
+          this.$bus.$emit('detailItemImgLoad')
+          
+        }
+      },
+      goodsItemClick() {
+        // this.$router.push('/detail/' + this.goodsItem.iid)
+        this.$router.push({
+          path:'/detail',
+          query: {
+            iid: this.goodsItem.iid
+          }
+        })
+      }
+    },
+    computed: {
+      showImg() {
+        // 顺序不能反
+        return this.goodsItem.image || this.goodsItem.show.img
       }
     }
     }

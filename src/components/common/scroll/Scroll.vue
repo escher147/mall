@@ -64,6 +64,10 @@
       refresh() {
         // console.log('-----');
         this.scroll && this.scroll.refresh()
+      },
+      // 记录滚动距离
+      getScrollY() {
+        return this.scroll ? this.scroll.y : 0
       }
     }
     }
