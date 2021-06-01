@@ -47,7 +47,8 @@
     border-bottom: 5px solid #f2f5f8;
   }
   .info-title {
-    color: #222
+    color: #222;
+    font-size: 14px;
   }
    .info-price {
     margin-top: 10px;

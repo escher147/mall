@@ -11,7 +11,8 @@
       <goods-list ref="recommend" :goods="recommends"></goods-list>
     </scroll>
     <back-top @click.native="backClick" v-show="isShowBackTop"></back-top>
-    <detail-bottom-bar></detail-bottom-bar>
+    <detail-bottom-bar @addToCart="addToCart"></detail-bottom-bar>
+    <!-- <toast :message="message" :isShow="isShow"></toast> -->
   </div>
 </template>
 
@@ -30,6 +31,7 @@
   import BackTop from '@/components/content/backTop/BackTop'
   import GoodsList from '@/components/content/goods/GoodsList'
   import Scroll from '@/components/common/scroll/Scroll'
+  // import Toast from '@/components/common/toast/Toast'
 
   import { getDetail, getRecommend, GoodsInfo, Shop, GoodsParam } from '@/network/detail'
   import  { backTopMixin } from '@/common/mixin'
@@ -38,6 +40,7 @@
     name: 'Detail',
     data() {
       return {
+        iid: null,
         topImages:[],
         goodsInfo: {},
         shopInfo: {},
@@ -46,7 +49,9 @@
         commentInfo: {},
         recommends: [],
         sectionOffsetTop: [],
-        currentIndex: 0
+        currentIndex: 0,
+        message: '',
+        isShow: false
       }
     },
     mixins: [backTopMixin],
@@ -62,16 +67,19 @@
 
       BackTop,
       GoodsList,
-      Scroll
+      Scroll,
+      // Toast
     },
     created() {
       // this.getGoodsDetail(this.$route.params.iid)
-      this.getGoodsDetail(this.$route.query.iid)
+      this.iid = this.$route.query.iid;
+      this.getGoodsDetail(this.iid)
       // console.log(this.$route);
     },
     methods: {
       getGoodsDetail(iid) {
         getDetail(iid).then(res => {
+          
           const data = res.data.result;
           // console.log(data);
           // 获取顶部图片
@@ -134,6 +142,27 @@
           }
         }
         this.isShowBackTop = -(position.y) > 1500
+      },
+      addToCart() {
+        const product = {};
+        product.image = this.topImages[0];
+        product.title = this.goodsInfo.title;
+        product.desc = this.goodsInfo.desc;
+        product.price = this.goodsInfo.realPrice;
+        product.iid = this.iid;
+        this.$store.dispatch('addCart', product).then(res => {
+          // console.log(res);
+          // toast普通实现方式
+          // this.message = res;
+          // this.isShow = true;
+          // setTimeout(() => {
+          //   this.isShow = false;
+          //   this.message = '';
+          // }, 1500)
+
+          // toast插件封装实现方式
+          this.$toast.show(res, 1500)
+        })
       }
     },
     mounted(){

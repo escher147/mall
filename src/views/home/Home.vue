@@ -204,6 +204,7 @@
     background-color: var(--color-tint);
     text-align: center;
     color:#fff;
+    font-size: 16px;
     font-weight: 700;
   }
   .home-content {

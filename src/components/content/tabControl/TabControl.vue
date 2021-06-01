@@ -39,6 +39,7 @@ export default {
 <style scoped>
   .tab-control {
     display: flex;
+    font-size: 16px;
     
   }
   .tab-control-item {
