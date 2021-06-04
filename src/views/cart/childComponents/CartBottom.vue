@@ -74,7 +74,6 @@
    align-items: center;
    background-color: #fff;
    border-top: 1px solid #eee;
-
    border-bottom: 1px solid #ccc;
  }
   .select-all {

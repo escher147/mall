@@ -30,8 +30,9 @@
           this.$bus.$emit('homeItemImgLoad')
           
         } else if (this.$route.path.indexOf('/detail') !== -1) {
-          this.$bus.$emit('detailItemImgLoad')
-          
+          this.$bus.$emit('detailItemImgLoad')         
+        } else if (this.$route.path.indexOf('/category') !== -1) {
+          this.$bus.$emit('categoryItemImgLoad')         
         }
       },
       goodsItemClick() {
@@ -47,9 +48,12 @@
     computed: {
       showImg() {
         // 顺序不能反
-        return this.goodsItem.image || this.goodsItem.show.img
+        return this.goodsItem.img || this.goodsItem.image || this.goodsItem.show.img
       }
-    }
+    },
+    mounted() {
+      // console.log(this.goodsItem);
+    },
     }
 </script>
 

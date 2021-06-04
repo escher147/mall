@@ -37,7 +37,7 @@
     },
     methods: {
       backClick() {
-        this.$router.push('/home')
+        this.$router.back()
       },
       titleClick(index) {
         this.currentIndex = index;

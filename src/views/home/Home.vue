@@ -104,7 +104,7 @@
       // 防抖动函数debounce，防止调用过于频繁
       const refresh = debounce(this.$refs.scroll && this.$refs.scroll.refresh, 200)
       // 监听goodsListItem组件发射的图片加载事件
-      this.$bus.$on('HometemImgLoad', () => {
+      this.$bus.$on('homeItemImgLoad', () => {
         // this.$refs.scroll保证能拿到scroll对象 
         // this.$refs.scroll && this.$refs.scroll.refresh()
         refresh()

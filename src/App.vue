@@ -6,16 +6,22 @@
     
     <main-tab-bar>
     </main-tab-bar>
+    <svg-icon></svg-icon>
+    <svg-icon></svg-icon>
   </div>
 </template>
 
 <script>
   import MainTabBar from 'components/content/MainTabBar'
+  import Icon from '@/components/content/icon/Icon'
+  import SvgIcon from '@/components/content/icon/SvgIcon'
 
   export default {
     name: 'App',
     components: {
-      MainTabBar
+      MainTabBar,
+      Icon,
+      SvgIcon
     }
   }
 </script>
